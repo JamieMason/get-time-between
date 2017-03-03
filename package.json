@@ -1,0 +1,15 @@
+{
+  "name": "time-between",
+  "version": "1.0.2",
+  "description": "Measure the amount of time between two dates",
+  "main": "time-between.js",
+  "repository": "https://github.com/tal/time-between",
+  "author": "Tal Atlas <me@tal.by>",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "devDependencies": {
+    "jest": "^19.0.2"
+  }
+}

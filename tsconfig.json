@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["dom", "es2017", "es6"],
+    "outDir": "./dist",
+    "strict": true,
+    "target": "es5"
+  },
+  "include": ["./package.json", "./src/**/*.ts"],
+  "exclude": ["./src/**/*.spec.ts"]
+}

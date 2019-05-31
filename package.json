@@ -1,15 +1,37 @@
 {
   "name": "time-between",
+  "description": "Measure the amount of time during work hours between two dates",
   "version": "1.0.2",
-  "description": "Measure the amount of time between two dates",
-  "main": "time-between.js",
-  "repository": "https://github.com/tal/time-between",
   "author": "Tal Atlas <me@tal.by>",
-  "license": "MIT",
-  "scripts": {
-    "test": "jest --watch"
-  },
+  "bugs": "https://github.com/tal/time-between/issues",
+  "contributors": [
+    "Jamie Mason (https://github.com/JamieMason)"
+  ],
   "devDependencies": {
-    "jest": "^19.0.2"
+    "@types/jest": "24.0.13",
+    "expect-more-jest": "2.4.1",
+    "jest": "24.8.0",
+    "prettier": "1.17.1",
+    "rimraf": "2.6.3",
+    "ts-jest": "24.0.2",
+    "tslint": "5.16.0",
+    "typescript": "3.5.1"
+  },
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/tal/time-between#readme",
+  "keywords": [],
+  "license": "MIT",
+  "main": "dist/time-between.js",
+  "repository": "tal/time-between",
+  "scripts": {
+    "build": "tsc --project .",
+    "format": "prettier --write '**/*.md' './src/**/*.ts'",
+    "lint": "tslint --fix --project ./tsconfig.json",
+    "prebuild": "rimraf dist",
+    "prelint": "npm run format",
+    "prepack": "npm run build",
+    "test": "jest"
   }
 }

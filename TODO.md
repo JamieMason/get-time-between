@@ -1,2 +1,1 @@
 - [ ] Allow ability to put vacation days
-- [ ] Return exact time to ms, or give option for time interval

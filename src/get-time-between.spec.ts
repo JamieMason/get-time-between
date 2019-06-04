@@ -1,4 +1,4 @@
-import { getTimeBetween } from './time-between';
+import { getTimeBetween } from './get-time-between';
 
 declare global {
   namespace jest {

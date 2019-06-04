@@ -1,11 +1,11 @@
 {
-  "name": "time-between",
+  "name": "get-time-between",
   "description": "Measure the amount of time during work hours between two dates",
-  "version": "1.0.2",
-  "author": "Tal Atlas <me@tal.by>",
-  "bugs": "https://github.com/tal/time-between/issues",
+  "version": "0.0.0",
+  "author": "Jamie Mason <jamie@foldleft.io> (https://github.com/JamieMason)",
+  "bugs": "https://github.com/JamieMason/get-time-between/issues",
   "contributors": [
-    "Jamie Mason (https://github.com/JamieMason)"
+    "Tal Atlas (https://github.com/tal)"
   ],
   "devDependencies": {
     "@types/jest": "24.0.13",
@@ -14,17 +14,17 @@
     "prettier": "1.17.1",
     "rimraf": "2.6.3",
     "ts-jest": "24.0.2",
-    "tslint": "5.16.0",
+    "tslint": "5.17.0",
     "typescript": "3.5.1"
   },
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/tal/time-between#readme",
+  "homepage": "https://github.com/JamieMason/get-time-between#readme",
   "keywords": [],
   "license": "MIT",
-  "main": "dist/time-between.js",
-  "repository": "tal/time-between",
+  "main": "dist/get-time-between.js",
+  "repository": "JamieMason/get-time-between",
   "scripts": {
     "build": "tsc --project .",
     "format": "prettier --write '**/*.md' './src/**/*.ts'",

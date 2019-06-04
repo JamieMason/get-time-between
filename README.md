@@ -32,8 +32,8 @@ shown here with their default values:
 ```js
 import { getTimeBetween } from 'get-time-between';
 
-const fridayFivePm = 'May 17 2019 17:00:00';
-const mondayElevenAm = 'May 20 2017 11:00:00';
+const fridayFivePm = new Date('May 17 2019 17:00:00');
+const mondayElevenAm = new Date('May 20 2017 11:00:00');
 
 const timeBetween = getTimeBetween(fridayFivePm, mondayElevenAm, {
   dailyEnd: [18, 0, 0], // [hour, minute, second] of the end of included days

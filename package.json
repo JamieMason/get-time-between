@@ -1,7 +1,7 @@
 {
   "name": "get-time-between",
   "description": "Measure the amount of time during work hours between two dates",
-  "version": "0.0.0",
+  "version": "2.0.0",
   "author": "Jamie Mason <jamie@foldleft.io> (https://github.com/JamieMason)",
   "bugs": "https://github.com/JamieMason/get-time-between/issues",
   "contributors": [

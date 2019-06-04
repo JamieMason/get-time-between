@@ -1,68 +1,21 @@
-export type Sunday = 0;
-export type Monday = 1;
-export type Tuesday = 2;
-export type Wednesday = 3;
-export type Thursday = 4;
-export type Friday = 5;
-export type Saturday = 6;
+import { Day, Hour, Minute, Second } from './options';
 
-export type Day =
-  | Sunday
-  | Monday
-  | Tuesday
-  | Wednesday
-  | Thursday
-  | Friday
-  | Saturday;
-
-export type Hour =
-  | 0
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
-  | 14
-  | 15
-  | 16
-  | 17
-  | 18
-  | 19
-  | 20
-  | 21
-  | 22
-  | 23;
-
-interface AllOptions {
-  dailyStart: number;
-  dailyEnd: number;
-  voidDays: number[];
+interface Options {
+  dailyEnd: [number, number, number];
+  dailyStart: [number, number, number];
+  excludedDays: number[];
 }
-
-const defaults: AllOptions = {
-  dailyEnd: 18,
-  dailyStart: 10,
-  voidDays: [6, 0]
-};
 
 export type GetTimeBetween = (
   start: Date,
   end: Date,
   options?: {
-    /** Hour of the day that work starts */
-    dailyStart?: Hour;
     /** Hour of the day that work ends */
-    dailyEnd?: Hour;
+    dailyEnd?: [Hour, Minute, Second];
+    /** Hour of the day that work starts */
+    dailyStart?: [Hour, Minute, Second];
     /** Zero-Indexed non-working days */
-    voidDays?: Day[];
+    excludedDays?: Day[];
   }
 ) => number;
 
@@ -70,10 +23,46 @@ export type GetTimeBetween = (
  * Calculate the number of millseconds during working hours between two dates.
  */
 export const getTimeBetween: GetTimeBetween = (start, end, options) => {
-  const { dailyEnd, dailyStart, voidDays } = {
-    ...defaults,
-    ...options
-  } as AllOptions;
+  const isNumber = (n: any) =>
+    typeof n === 'number' && !isNaN(n) && isFinite(n);
+  const isArrayOfNumbers = (a: any) => Array.isArray(a) && a.every(isNumber);
+  const isWithinRange = (floor: number, ceiling: number, n: number) =>
+    n >= floor && n <= ceiling;
+  const isValidDay = (v: any) => isNumber(v) && isWithinRange(0, 6, v);
+  const isArrayOfDays = (a: any) => Array.isArray(a) && a.every(isValidDay);
+  const isValidTime = (v: any) =>
+    isArrayOfNumbers(v) &&
+    v.length === 3 &&
+    isWithinRange(0, 23, v[0]) &&
+    isWithinRange(0, 59, v[1]) &&
+    isWithinRange(0, 59, v[2]);
+
+  const defaults: Options = {
+    dailyEnd: [18, 0, 0],
+    dailyStart: [10, 0, 0],
+    excludedDays: [6, 0]
+  };
+  const opts = { ...defaults, ...options } as Options;
+
+  if (!isValidTime(opts.dailyStart)) {
+    throw new TypeError(
+      'dailyStart should be undefined or an Array of 3 Numbers'
+    );
+  }
+
+  if (!isValidTime(opts.dailyEnd)) {
+    throw new TypeError(
+      'dailyEnd should be undefined or an Array of 3 Numbers'
+    );
+  }
+
+  if (!isArrayOfDays(opts.excludedDays)) {
+    throw new TypeError(
+      'excludedDays should be undefined or an Array of Numbers between 0 (Sunday) and 6 (Saturday)'
+    );
+  }
+
+  const { dailyEnd, dailyStart, excludedDays } = opts;
   const [startDate, endDate] =
     start.getTime() > end.getTime() ? [end, start] : [start, end];
 
@@ -82,13 +71,14 @@ export const getTimeBetween: GetTimeBetween = (start, end, options) => {
     a.getMonth() === b.getMonth() &&
     a.getDate() === b.getDate();
 
-  const isVoidDay = (date: Date) => voidDays.includes(date.getDay());
+  const isVoidDay = (date: Date) => excludedDays.includes(date.getDay());
   const isOnStartDate = (date: Date) => isSameDate(startDate, date);
   const isOnEndDate = (date: Date) => isSameDate(endDate, date);
 
   const isBeforeStartOfWorkingHours = (date: Date) =>
-    date.getHours() < dailyStart;
-  const isAfterEndOfWorkingHours = (date: Date) => date.getHours() > dailyEnd;
+    date.getHours() < dailyStart[0];
+  const isAfterEndOfWorkingHours = (date: Date) =>
+    date.getHours() > dailyEnd[0];
 
   const withTime = (
     date: Date,
@@ -105,9 +95,9 @@ export const getTimeBetween: GetTimeBetween = (start, end, options) => {
   const withTimeAtStartOfDay = (date: Date) => withTime(date, 0, 0, 0, 0);
   const withTimeAtEndOfDay = (date: Date) => withTime(date, 23, 0, 0, 0);
   const withTimeAtStartOfWorkingHours = (date: Date) =>
-    withTime(date, dailyStart, 0, 0, 0);
+    withTime(date, dailyStart[0], dailyStart[1], dailyStart[2], 0);
   const withTimeAtEndOfWorkingHours = (date: Date) =>
-    withTime(date, dailyEnd, 0, 0, 0);
+    withTime(date, dailyEnd[0], dailyEnd[1], dailyEnd[2], 0);
 
   const withTimeDuringWorkingHours = (date: Date) => {
     if (isBeforeStartOfWorkingHours(date)) {
@@ -152,17 +142,3 @@ export const getTimeBetween: GetTimeBetween = (start, end, options) => {
 
   return totalMsecs;
 };
-
-/**
- * Calculate the number of working hours between two dates.
- *
- * Incomplete hours are rounded down – if two dates which are 1hr 45mins apart
- * are given, the result will be 1.
- */
-export const getHoursBetween: GetTimeBetween = (start, end, options) => {
-  const msecsPerHour = 3600000;
-  const msecsBetween = getTimeBetween(start, end, options);
-  return Math.floor(msecsBetween / msecsPerHour);
-};
-
-export default getHoursBetween;

@@ -1,4 +1,13 @@
-# 2.0.0 (2019-06-04)
+## [2.0.1](https://github.com/JamieMason/get-time-between/compare/2.0.0...2.0.1) (2019-08-04)
+
+
+### Bug Fixes
+
+* **npm:** update dependencies ([2380f3c](https://github.com/JamieMason/get-time-between/commit/2380f3c))
+
+
+
+# [2.0.0](https://github.com/JamieMason/get-time-between/compare/53eb8eb...2.0.0) (2019-06-04)
 
 
 ### Features
